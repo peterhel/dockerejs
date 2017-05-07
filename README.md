@@ -1,4 +1,4 @@
-# dockergen
+# dockerejs
 ## a docker ejs template generator
 
 *Installation*

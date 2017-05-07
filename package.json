@@ -1,5 +1,5 @@
 {
-  "name": "dockergen",
+  "name": "dockerejs",
   "version": "0.0.0",
   "description": "",
   "repository": {
@@ -7,7 +7,7 @@
   },
   "main": "index.js",
   "bin": {
-    "dockergen": "bin/dockergen"
+    "dockerejs": "bin/dockerejs"
   },
   "dependencies": {
     "commander": "2.9.0",
@@ -20,7 +20,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc",
-    "start": "bin/dockergen",
+    "start": "bin/dockerejs",
     "preview": "npm pack; tar --list -f *.tgz; rm *.tgz",
     "prepublish": "npm run build"
   },
