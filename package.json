@@ -1,0 +1,29 @@
+{
+  "name": "dockergen",
+  "version": "0.0.0",
+  "description": "",
+  "repository": {
+    "url": "https://github.com/peterhel/dockergen"
+  },
+  "main": "index.js",
+  "bin": {
+    "dockergen": "bin/dockergen"
+  },
+  "dependencies": {
+    "commander": "2.9.0",
+    "ejs": "2.5.6"
+  },
+  "devDependencies": {
+    "typescript": "2.2.2",
+    "@types/node": "7.0.12"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc",
+    "start": "bin/dockergen",
+    "preview": "npm pack; tar --list -f *.tgz; rm *.tgz",
+    "prepublish": "npm run build"
+  },
+  "author": "",
+  "license": "ISC"
+}

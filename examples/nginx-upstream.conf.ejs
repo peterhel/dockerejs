@@ -1,0 +1,10 @@
+upstream <%= Actor.Attributes.hostname %> {
+  server <%= inspect.NetworkSettings.Ports['80/tcp'][0].HostIp %>:<%= inspect.NetworkSettings.Ports['80/tcp'][0].HostPort %>;
+}
+
+server {
+    server_name <%= Actor.Attributes.hostname %>.example.com;
+    location / {
+        proxy_pass http://<%= Actor.Attributes.hostname %>;
+    }
+}
