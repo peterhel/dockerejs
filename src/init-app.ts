@@ -28,13 +28,13 @@ export function getConfig() {
         port: 2375
     }
 
-    if (!fs.existsSync('/etc/dockergen/config.json')) {
-        console.error(`No config file found at '/etc/dockergen/config.json'`);
+    if (!fs.existsSync('/etc/dockerejs/config.json')) {
+        console.error(`No config file found at '/etc/dockerejs/config.json'`);
         console.error(`Defaulting to the following:`);
         console.error(JSON.stringify(defaultConfig, null, 2));
         config = defaultConfig;
     } else {
-        const configContent = fs.readFileSync('/etc/dockergen/config.json', 'utf8');
+        const configContent = fs.readFileSync('/etc/dockerejs/config.json', 'utf8');
         config = JSON.parse(configContent);
     }
 
