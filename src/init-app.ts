@@ -34,6 +34,7 @@ export function getConfig() {
         console.error(JSON.stringify(defaultConfig, null, 2));
         config = defaultConfig;
     } else {
+        console.log('Using /etc/dockerejs/config.json')
         const configContent = fs.readFileSync('/etc/dockerejs/config.json', 'utf8');
         config = JSON.parse(configContent);
     }
