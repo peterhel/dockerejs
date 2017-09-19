@@ -12,12 +12,12 @@ export class Handler {
 
         events.on('container:start', data => {
             let file;
-            if (data.Actor.Attributes.hostname === hostname) {
+            if (data.Config.Labels.hostname === hostname) {
                 file = outFile;
             }
             else if ('*' === hostname) {
                 file = outFile.replace(/\{(.+?)\}/, (match, x) => {
-                    return data.Actor.Attributes[x];                    
+                    return data.Config.Labels[x];                    
                 })
             } else {
                 return;

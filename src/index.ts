@@ -37,25 +37,54 @@ async function inspect(containerId: string) {
     })
 }
 
-const cmd = spawn('docker', ['-H', `${config.host}:${config.port}`, 'events', '--format', '{{json .}}']);
-cmd.stderr.pipe(process.stderr);
+async function getRunningContainers(): Promise<string[]> {
+    return new Promise<string[]>((resolve, reject) => {
+        const cmd = spawn('docker', ['-H', `${config.host}:${config.port}`, 'ps', '-aq', '--no-trunc']);
+        cmd.stderr.pipe(process.stderr);
 
-const rl = readline.createInterface({
-    input: cmd.stdout
-});
+        const rl = readline.createInterface({
+            input: cmd.stdout
+        });
 
-rl.on('line', line => {
-    (async () => {
-        const data = JSON.parse(line);
+        rl.on('line', async line => {
+            let details;
+            details = await inspect(line);
 
-        if (data.Type === 'container') {
-            data.inspect = await inspect(data.id);
-        }
+            events.emit(`container:start`, details)
 
-        events.emit(`${data.Type}:${data.Action}`, data)
-    })();;
-});
+        });
 
-cmd.on('close', (code) => {
-    console.log(`docker events exited with code ${code}`);
-});
+        cmd.on('close', (code) => {
+            resolve();
+        });
+    });
+}
+
+function listenToEventStream(): void {
+    const cmd = spawn('docker', ['-H', `${config.host}:${config.port}`, 'events', '--format', '{{json .}}']);
+    cmd.stderr.pipe(process.stderr);
+
+    const rl = readline.createInterface({
+        input: cmd.stdout
+    });
+
+    rl.on('line', line => {
+        (async () => {
+            const data = JSON.parse(line);
+            let details;
+            if (data.Type === 'container') {
+                details = await inspect(data.id);
+            }
+            events.emit(`${data.Type}:${data.Action}`, details)
+        })();;
+    });
+
+    cmd.on('close', (code) => {
+        console.log(`docker events exited with code ${code}`);
+    });
+}
+
+(async () => {
+    await getRunningContainers();
+    await listenToEventStream();
+})();
